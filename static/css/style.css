@@ -1,46 +1,15 @@
-
-.menu-btn {
-    width: 100%;
-    margin-bottom: 25px;
-}
-
-.focus-display {
-    padding-top:1px;
-    padding-bottom:1px;
-    text-align: center;
-}
-
 .timer {
     text-align: center;
 }
 
 .timer-btn {
     width: 100%;
-    margin-top: 25px;
 }
 
-.datepicker-date-display {
-    background-color: #4caf50;
+.menu-btn {
+    width: 100%;
+    margin-bottom: 25px;
 }
-.datepicker-cancel, .datepicker-clear, .datepicker-today, .datepicker-done {
-color: #4caf50;
-}
-.datepicker-table td.is-today {
-color: #4caf50;
-}
-.datepicker-table td.is-selected {
-background-color: #4caf50;
-color: #fff;
-}
-
-.timepicker-digital-display {
-    background-color: #4caf50;
-}
-.timepicker-tick.active,
-.timepicker-tick:hover {
-  background-color: rgba(76, 175, 80, 0.25);
-}
-
-*:not(#create-task-modal *) {
-    filter: grayscale(100%);
+#create-task-modal { 
+    max-height: 100%;
 }

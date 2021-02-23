@@ -1,8 +1,5 @@
 $(document).ready(function(){
-    $('.sidenav').sidenav();
-    $('.modal').modal();
-    $('.datepicker').datepicker();
-    $('.timepicker').timepicker();
+    M.AutoInit();
     $('#start-stop-btn').click(function(){
       $('#start-stop-btn').text($('#start-stop-btn').text() == "Start" ? "Stop" : "Start");
     });

@@ -2,72 +2,79 @@
 
 {% block content %}
 <div class="row">
-  <div class="col s10 offset-s1">
-      <div class="card">
-          <div class="card-content black-text">
-              <div class="row">
-                  <div class="col s10 offset-s1">
-                      <div class="card-panel green focus-display">
-                          <h5 class="white-text">Focus</h5>
-                      </div>
-                  </div>
-                  <div class="col s10 offset-s1">
-                      <h1 class="timer">15:00</h1>
-                  </div>
-                  <div class="col s10 offset-s1">
-                      <a class="waves-effect waves-light timer-btn btn-large green" id="start-stop-btn">Stop</a>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  <div class="col s10 offset-s1 l2 offset-l2">
-      <a class="waves-effect waves-light menu-btn btn-large green modal-trigger" href="#create-task-modal"><i
-              class="material-icons left">add</i>Create
-          Task</a>
-  </div>
-  <div class="col s10 offset-s1 l2">
-      <a class="waves-effect waves-light menu-btn btn-large green" href="{{ url_for('calendar') }}"><i
-              class="material-icons left">event</i>Calendar</a>
-  </div>
-  <div class="col s10 offset-s1 l2">
-      <a class="waves-effect waves-light menu-btn btn-large green" href="{{ url_for('activity') }}"><i
-              class="material-icons left">insert_chart</i>Activity History</a>
-  </div>
-  <div class="col s10 offset-s1 l2">
-      <a class="waves-effect waves-light menu-btn btn-large green" href="{{ url_for('help') }}"><i
-              class="material-icons left">help_outline</i>Help</a>
-  </div>
+    <!-- TIMER -->
+    <div class="col s10 offset-s1">
+        <div class="card">
+            <div class="card-content">
+                <div class="row timer">
+                    <div class="col s12">
+                        <div class="card-panel green">
+                            <h4 class="white-text">Focus</h4>
+                            <h4 class="white-text">{{classname}}</h4>
+                        </div>
+                    </div>
+                    <div class="col s10 offset-s1">
+                        <h1>15:00</h1>
+                    </div>
+                    <div class="col s10 offset-s1">
+                        <a class="waves-effect waves-light timer-btn btn-large green" id="start-stop-btn">Stop</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MENU -->
+    <div class="col s10 offset-s1 l2 offset-l2">
+        <a class="waves-effect waves-light menu-btn btn-large green modal-trigger" href="#create-task-modal"><i
+                class="material-icons left">add</i>Create Task</a>
+    </div>
+    <div class="col s10 offset-s1 l2">
+        <a class="waves-effect waves-light menu-btn btn-large green" href="{{ url_for('schedule') }}"><i
+                class="material-icons left">event</i>Schedule</a>
+    </div>
+    <div class="col s10 offset-s1 l2">
+        <a class="waves-effect waves-light menu-btn btn-large green" href="{{ url_for('activity') }}"><i
+                class="material-icons left">insert_chart</i>History</a>
+    </div>
+    <div class="col s10 offset-s1 l2">
+        <a class="waves-effect waves-light menu-btn btn-large green" href="{{ url_for('help') }}"><i
+                class="material-icons left">help_outline</i>Help</a>
+    </div>
 </div>
-<div id="create-task-modal" class="modal">
-  <div class="modal-content">
-      <h4 style="text-align: center;">Create a Task</h4>
-      <div class="row">
-          <form class="col s12">
-              <div class="row">
-                  <div class="input-field col s12">
-                      <input placeholder="Math Lecture" id="class_name" type="text" class="validate">
-                      <label for="class_name">Name</label>
-                  </div>
-                  <div class="input-field col s12">
-                      <input type="text" id="start_date" class="datepicker">
-                      <label for="start_date">Start Date</label>
-                  </div>
-                  <div class="input-field col s12">
-                      <input type="text" id="start_time" class="timepicker">
-                      <label for="start_time">Start Time</label>
-                  </div>
-                  <div class="input-field col s12">
-                      <input type="text" id="end_time" class="timepicker">
-                      <label for="end_time">End Time</label>
-                  </div>
-                  <div class="input-field col s12">
-                      <a class="waves-effect waves-light menu-btn btn-large green"><i
-                              class="material-icons left">add</i>Create Task</a>
-                  </div>
-              </div>
-          </form>
-      </div>
-  </div>
+
+<!-- CREATE TASK MODAL -->
+<div id="create-task-modal" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4 style="text-align: center;">Create a Task</h4>
+        <form method="POST">
+            <div class="row">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input placeholder="Study for math test" name="taskName" id="taskName" type="text"
+                            class="validate" required>
+                        <label for="taskName">Task Name</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input value=60 name="minutes" id="minutes" type="number" class="validate" required>
+                        <label for="minutes">Time Needed (minutes)</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="priority" id="priority">
+                            <option value=1>Low</option>
+                            <option value=2>Medium</option>
+                            <option value=3>High</option>
+                        </select>
+                        <label for="priority">Priority</label>
+                    </div>
+                    <div class="col s12">
+                        <button class="btn-large waves-effect waves-light green timer-btn" type="submit"
+                            name="action">Add Task
+                            <i class="material-icons left">add</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}
