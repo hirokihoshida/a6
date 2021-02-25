@@ -13,3 +13,7 @@
 #create-task-modal { 
     max-height: 100%;
 }
+
+.modal { 
+    max-height: 100% !important; 
+}
