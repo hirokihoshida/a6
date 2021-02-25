@@ -19,19 +19,19 @@ def loggedIn():
 def home():
     return render_template("home.html")
 
-@app.route('/', methods=['POST'])
-def newTask():
-    global idCount
-    global tasks
-    task = {
-    "taskID": idCount,
-    "taskName": request.form['taskName'],
-    "minutes": request.form['minutes'],
-    "priority": request.form['priority']
-    }
-    tasks[idCount] = task
-    idCount += 1
-    return render_template("home.html", classname=task)
+# @app.route('/', methods=['POST'])
+# def newTask():
+#     global idCount
+#     global tasks
+#     task = {
+#     "taskID": idCount,
+#     "taskName": request.form['taskName'],
+#     "minutes": request.form['minutes'],
+#     "priority": request.form['priority']
+#     }
+#     tasks[idCount] = task
+#     idCount += 1
+#     return render_template("home.html", classname=task)
 
 @app.route("/schedule")
 def schedule():
