@@ -7,12 +7,17 @@
         <ul class="collection">
             <script>
                 var tasks = JSON.parse(localStorage.getItem("tasks"));
-                $.each(tasks["tasks"], function (i, item) {
-                    document.write("<li class='collection-item " + item['taskID'] +"'>");
-                    document.write("<span class='title'>" + item['taskName'] + "<br>" + item['minutes'] + " minutes left</span>")
-                    document.write("<a href='#" + item['taskID'] + "-modal' class='secondary-content green-text modal-trigger'>Edit</a>");
-                    document.write("</li>");
-                });
+                if (tasks['tasks'].length == 0) {
+                    document.write("<h5 style='text-align: center;'>You currently have no tasks!</h5>")
+                }
+                else {
+                    $.each(tasks["tasks"], function (i, item) {
+                        document.write("<li class='collection-item " + item['taskID'] + "'>");
+                        document.write("<span class='title'>" + item['taskName'] + "<br>" + item['minutes'] + " minutes left</span>")
+                        document.write("<a href='#" + item['taskID'] + "-modal' class='secondary-content green-text modal-trigger'>Edit</a>");
+                        document.write("</li>");
+                    });
+                }
             </script>
         </ul>
     </div>
@@ -24,10 +29,10 @@
     var tasks = JSON.parse(localStorage.getItem("tasks"));
     $.each(tasks["tasks"], function (i, item) {
         // Modal Header
-        document.write("<div id='" + item['taskID'] +"-modal' class='modal bottom-sheet edit-task-modal " + item['taskID'] + "'>");
+        document.write("<div id='" + item['taskID'] + "-modal' class='modal bottom-sheet edit-task-modal " + item['taskID'] + "'>");
         document.write("<div class='modal-content'>");
         document.write("<h4 style='text-align: center;''>Edit Task</h4>");
-        document.write("<form id='" + item['taskID'] +"-form' onsubmit='editTask(" + item['taskID'] + ")'>");
+        document.write("<form id='" + item['taskID'] + "-form' onsubmit='editTask(" + item['taskID'] + ")'>");
         document.write("<div class='row'>");
         // Task Name
         document.write("<div class='input-field col s12'>");
@@ -77,4 +82,3 @@
 </script>
 
 {% endblock %}
-
