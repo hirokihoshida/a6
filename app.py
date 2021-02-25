@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import os
 import json
 
@@ -7,6 +7,13 @@ app = Flask(__name__)
 tasks = {}
 idCount = 0
 
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/login", methods=['POST'])
+def loggedIn():
+    return redirect("/")
 
 @app.route("/")
 def home():
@@ -28,6 +35,7 @@ def newTask():
 
 @app.route("/schedule")
 def schedule():
+    global tasks
     return render_template("schedule.html", tasks=tasks)
     
 @app.route("/help")

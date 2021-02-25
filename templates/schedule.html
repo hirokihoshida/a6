@@ -16,12 +16,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for i in tasks.keys() %}
+                                <script>
+                                    var tasks = JSON.parse(localStorage.getItem("tasks"));
+                                    $.each(tasks["tasks"], function (i, item) {
+                                        document.write("<tr>");
+                                        console.log(item, i)
+                                        document.write("<td>" + item["taskName"] + "</td>")
+                                        document.write("<td>" + item['minutes'] + " minutes </td>")
+                                        document.write("</tr>");
+                                    });
+                                </script>
+                                <!-- {% for i in tasks.keys() %}
                                 <tr>
                                     <td>{{tasks[i]['taskName']}}</td>
                                     <td>{{tasks[i]['minutes']}} Minutes</td>
                                 </tr>
-                                {% endfor %}
+                                {% endfor %} -->
                             </tbody>
                         </table>
                     </div>

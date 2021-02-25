@@ -14,10 +14,10 @@
                         </div>
                     </div>
                     <div class="col s10 offset-s1">
-                        <h1>15:00</h1>
+                        <h1 id="time">15:00</h1>
                     </div>
                     <div class="col s10 offset-s1">
-                        <a class="waves-effect waves-light timer-btn btn-large green" id="start-stop-btn">Stop</a>
+                        <a class="waves-effect waves-light timer-btn btn-large green"  onclick="toggleTimer()" id="start-stop-btn">Stop</a>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
 <div id="create-task-modal" class="modal bottom-sheet">
     <div class="modal-content">
         <h4 style="text-align: center;">Create a Task</h4>
-        <form method="POST">
+        <form id="addTaskForm" method="POST" onsubmit="addTask()">
             <div class="row">
                 <div class="row">
                     <div class="input-field col s12">
