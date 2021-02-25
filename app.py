@@ -36,8 +36,12 @@ def home():
 @app.route("/schedule")
 def schedule():
     global tasks
-    return render_template("schedule.html", tasks=tasks)
-    
+    return render_template("schedule.html")
+
+@app.route("/settings")
+def settings():
+    return render_template("settings.html")
+
 @app.route("/help")
 def help():
     return render_template("help.html")

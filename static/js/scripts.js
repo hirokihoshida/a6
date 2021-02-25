@@ -55,7 +55,7 @@ function startFocus() {
     var taskID = tasks['tasks'][0]['taskID'];
     timeNeeded = parseInt(tasks['tasks'][0]['minutes']) * 60;
     //if time needed is less than focustime, set the timer to time needed
-    if (timer == 0){
+    if (timer == 0) {
         if (timeNeeded < focusTime) {
             timer = timeNeeded;
         } else {
@@ -85,7 +85,7 @@ function startFocus() {
                 }
                 startBreakLong();
             } else {
-                tasks['tasks'][0]['minutes'] = timeNeeded / 60;
+                tasks['tasks'][0]['minutes'] = Math.floor(timeNeeded / 60);
                 localStorage.setItem("tasks", JSON.stringify(tasks));
                 $('#info-banner').text("Taking a Short Break From " + tasks['tasks'][0]['taskName']);
                 startBreakShort();
@@ -133,19 +133,37 @@ function stopTimer() {
     $('.menu-btn').removeClass("disabled");
     if (timerState == 1) {
         var tasks = JSON.parse(localStorage.getItem("tasks"));
-        if (timeNeeded - (timeCompleted - timer) >= 0){
+        if (timeNeeded - (timeCompleted - timer) >= 0) {
             timeNeeded = timeNeeded - (timeCompleted - timer);
-            tasks['tasks'][0]['minutes'] = timeNeeded / 60;
+            tasks['tasks'][0]['minutes'] = Math.floor(timeNeeded / 60);
             localStorage.setItem("tasks", JSON.stringify(tasks));
-        }else{
-            tasks['tasks'][0]['minutes'] = timeNeeded / 60;
+        } else {
+            tasks['tasks'][0]['minutes'] = Math.floor(timeNeeded / 60);
             localStorage.setItem("tasks", JSON.stringify(tasks));
         }
-    }else if (timerState == 2 || timerState== 3){
+    } else if (timerState == 2 || timerState == 3) {
         timer = 0;
     }
     clearInterval(timerID);
     timerState = 0;
+}
+
+function saveTiming() {
+    var timings = $('#settings-form').serializeArray();
+    timings = timings.reduce(function (acc, cur, i) {
+        acc[cur.name] = cur.value;
+        return acc;
+    }, {});
+    localStorage.setItem("focusTime", timings['focusTime'] * 60);
+    localStorage.setItem("breakShortTime", timings['breakShortTime'] * 60);
+    localStorage.setItem("breakLongTime", timings['breakLongTime'] * 60);
+}
+
+function resetTiming() {
+    localStorage.setItem("focusTime", 60 * 25);
+    localStorage.setItem("breakShortTime", 60 * 5);
+    localStorage.setItem("breakLongTime", 60 * 10);
+    location.reload();
 }
 
 function addTask() {
