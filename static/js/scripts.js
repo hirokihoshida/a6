@@ -91,7 +91,7 @@ function startFocus() {
                 startBreakShort();
             }
         }
-    })
+    }, 1000)
 }
 
 function startBreakShort() {
@@ -109,7 +109,7 @@ function startBreakShort() {
             clearInterval(timerID);
             startFocus();
         }
-    })
+    }, 1000)
 }
 
 function startBreakLong() {
@@ -126,7 +126,7 @@ function startBreakLong() {
             clearInterval(timerID);
             startFocus();
         }
-    })
+    }, 1000)
 }
 
 function stopTimer() {
