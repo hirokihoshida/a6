@@ -5,6 +5,7 @@
     <div class="card-content black-text">
         <h5 class="chart" style="text-align: center;">Schedule</h5>
         <ul class="collection">
+            <!-- Repeat for each task in list, creates a modal for each task that can be used to edit each task -->
             <script>
                 var tasks = JSON.parse(localStorage.getItem("tasks"));
                 if (tasks['tasks'].length == 0) {

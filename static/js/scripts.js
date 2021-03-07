@@ -1,5 +1,3 @@
-
-
 //convert seconds to H:M:S
 function secondsToTime(s) {
     var h = Math.floor(s / 3600);
@@ -33,52 +31,68 @@ function buttonClicked() {
     }
 }
 
+//setInterval object
 var timerID;
+//time that shows visually
 var timer = 0;
+//time needed for current task
 var timeNeeded;
+//time completed after current focus session
 var timeCompleted;
 
+
+//starts timer for focus, after finished, checks if task is done. if so, start long break. else, start short break
 function startFocus() {
-    $('.menu-btn').addClass("disabled");
+    //default focus time, tasks list
     var focusTime = localStorage.getItem("focusTime");
-    $('#start-stop-btn').text("Stop Focus");
-    //if tasks list is empty
     var tasks = JSON.parse(localStorage.getItem("tasks"));
+    
+    //if tasks list is empty, show no tasks are available and stop
     if (tasks['tasks'].length == 0) {
         $('#start-stop-btn').removeClass("green").addClass("red");
         $('#start-stop-btn').text("No Tasks!");
         $('.menu-btn').removeClass("disabled");
         return;
     }
+    //visual button changes
+    $('.menu-btn').addClass("disabled");
+    $('#start-stop-btn').text("Stop Focus");
     $('#info-banner').text("Currently Focused on " + tasks['tasks'][0]['taskName']);
+
     timerState = 1;
+
+    //get minutes required of current task
     var taskID = tasks['tasks'][0]['taskID'];
     timeNeeded = parseInt(tasks['tasks'][0]['minutes']) * 60;
-    //if time needed is less than focustime, set the timer to time needed
-    if (timer == 0) {
+    //if time needed is less than focustime, set the timer to time needed ex: default focus time is 25, but there is 10 remaining for current task
+    if (timer <= 0) {
         if (timeNeeded < focusTime) {
             timer = timeNeeded;
         } else {
             timer = focusTime;
         }
     }
-
+    //time that would be completed once timer runs out, subtracts it from task later
     timeCompleted = timer;
+
     //start focus timer
     timerID = setInterval(function () {
-        //write time
+        //visual update time
         $('#time').html(secondsToTime(timer));
         timer -= 1
         //if timer is done, delete timer
         if (timer < 0) {
             timer = 0;
             clearInterval(timerID);
-            //if time needed is 0, delete the task. otherwise, subtract the time completed from time needed on task
+            //if time needed for current task is 0, delete task
+            //else, subtract time completed from time needed
+            //start short or long break depending on whether task finished
             timeNeeded = timeNeeded - timeCompleted;
             if (timeNeeded <= 0) {
                 $('#info-banner').text("Taking a Break After Finishing " + tasks['tasks'][0]['taskName']);
                 deleteTask(taskID.toString());
                 var tasksRemaining = JSON.parse(localStorage.getItem("tasks"));
+                //if all tasks are done, finish
                 if (tasksRemaining['tasks'].length == 0) {
                     $('#info-banner').text("You Finished All Your Tasks!");
                     return;
@@ -91,27 +105,30 @@ function startFocus() {
                 startBreakShort();
             }
         }
+    //interval, remove for fast timer (debug)
     }, 1000)
 }
 
+//starts timer for short break when task currently being worked on is not done
 function startBreakShort() {
     timerState = 2;
     $('#start-stop-btn').text("Stop Short Break");
     var breakShortTime = localStorage.getItem("breakShortTime");
     timer = breakShortTime;
-    console.log(timer);
     timerID = setInterval(function () {
         //write time
         $('#time').html(secondsToTime(timer));
         timer -= 1
-        //if timer is done, delete timer
+        //if timer is done, delete timer, start focus
         if (timer < 0) {
             clearInterval(timerID);
             startFocus();
         }
+        //debug timer
     }, 1000)
 }
 
+//starts timer for long break between task completions
 function startBreakLong() {
     timerState = 3;
     $('#start-stop-btn').text("Stop Long Break");
@@ -121,16 +138,20 @@ function startBreakLong() {
         //write time
         $('#time').html(secondsToTime(timer));
         timer -= 1
-        //if timer is done, delete timer
+        //if timer is done, delete timer, start focus
         if (timer < 0) {
             clearInterval(timerID);
             startFocus();
         }
+        //debug timer
     }, 1000)
 }
 
+//stops timer when stop button clicked. depending on state of timer, change actions
 function stopTimer() {
+    //reenable disabled buttons
     $('.menu-btn').removeClass("disabled");
+    //if currently in focus mode, remove partially completed time from task
     if (timerState == 1) {
         var tasks = JSON.parse(localStorage.getItem("tasks"));
         if (timeNeeded - (timeCompleted - timer) >= 0) {
@@ -141,13 +162,16 @@ function stopTimer() {
             tasks['tasks'][0]['minutes'] = Math.floor(timeNeeded / 60);
             localStorage.setItem("tasks", JSON.stringify(tasks));
         }
+    //if on break, just cancel break
     } else if (timerState == 2 || timerState == 3) {
         timer = 0;
     }
+    //stop timer
     clearInterval(timerID);
     timerState = 0;
 }
 
+//if default timings are updated from Settings page, change values in localStorage here
 function saveTiming() {
     var timings = $('#settings-form').serializeArray();
     timings = timings.reduce(function (acc, cur, i) {
@@ -159,6 +183,7 @@ function saveTiming() {
     localStorage.setItem("breakLongTime", timings['breakLongTime'] * 60);
 }
 
+//if reset button is pressed in Settings
 function resetTiming() {
     localStorage.setItem("focusTime", 60 * 25);
     localStorage.setItem("breakShortTime", 60 * 5);
@@ -166,6 +191,7 @@ function resetTiming() {
     location.reload();
 }
 
+//adding a task with Create Task button and modal
 function addTask() {
     // get task ID
     if (localStorage.getItem("taskID") == null) {
@@ -180,27 +206,29 @@ function addTask() {
         return acc;
     }, {});
     task['taskID'] = taskID
+
     //read task list, push new task, sort list by prio
     var tasks = JSON.parse(localStorage.getItem("tasks"));
     tasks['tasks'].push(task);
     tasks['tasks'] = tasks['tasks'].sort(function (obj1, obj2) {
         return obj2.priority - obj1.priority;
     });
+
     //set new task list, iterate task ID
     localStorage.setItem("tasks", JSON.stringify(tasks));
     localStorage.setItem("taskID", parseInt(taskID) + 1);
 }
 
+//edit task from Schedule page
 function editTask(taskID) {
     //read new task, JSONify and add task ID
     var task = $('#' + taskID + "-form").serializeArray();
-    console.log(task);
     task = task.reduce(function (acc, cur, i) {
         acc[cur.name] = cur.value;
         return acc;
     }, {});
-    console.log(task);
     task['taskID'] = taskID;
+
     //delete old task with same ID, push new task, sort list by prio
     deleteTask(taskID);
     var tasks = JSON.parse(localStorage.getItem("tasks"));
@@ -208,14 +236,17 @@ function editTask(taskID) {
     tasks['tasks'] = tasks['tasks'].sort(function (obj1, obj2) {
         return obj2.priority - obj1.priority;
     });
+
     //set new task list
     localStorage.setItem("tasks", JSON.stringify(tasks));
     location.reload();
 }
 
+//if task is deleted from edit modal in Schedule page
 function deleteTask(taskID) {
-    //remove task from collection as well as modal html
+    //remove task from collection as well as modal html (visual)
     $("." + taskID).remove();
+
     //pull local storage tasks, iterate and find task to delete by ID, splice it out
     var tasks = JSON.parse(localStorage.getItem("tasks"));
     for (let [i, task] of tasks['tasks'].entries()) {
@@ -223,22 +254,26 @@ function deleteTask(taskID) {
             tasks['tasks'].splice(i, 1);
         }
     }
+
     //push new tasks to local storage
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 
 $(document).ready(function () {
+    //initialize matCSS js
     M.AutoInit();
     timerState = 0;
-    //first initialization add focus and break times
+
+    //first time initialization add focus and break times
     if (localStorage.getItem("focusTime") == null) {
         localStorage.setItem("focusTime", 60 * 25);
         localStorage.setItem("breakShortTime", 60 * 5);
         localStorage.setItem("breakLongTime", 60 * 10);
     }
     $('#time').html(secondsToTime(localStorage.getItem("focusTime")));
-    // if task list is empty create task list
+
+    // first time initialization create tasks JSON
     if (localStorage.getItem("tasks") == null) {
         localStorage.setItem("tasks", JSON.stringify({ tasks: [] }));
     }
