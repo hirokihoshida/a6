@@ -17,24 +17,25 @@
                             <script>
                                 document.write("<input value=" + localStorage.getItem("breakShortTime") / 60 + " id='breakShortTime' name='breakShortTime' type='number' min='1' max='20' class='validate' required>");
                             </script>
-                            <label for="breakShortTime">Short Break (Minutes)</label>
+                            <label for="breakShortTime">Short Break</label>
                         </div>
                         <div class="input-field col s5">
                             <script>
                                 document.write("<input value=" + localStorage.getItem("breakLongTime") / 60 + " id='breakLongTime' name='breakLongTime' type='number' min='1' max='59' class='validate' required>");
                             </script>
-                            <label for="breakLongTime">Long Break (Minutes)</label>
+                            <label for="breakLongTime">Long Break</label>
                         </div>
-                        <div class="col s5 offset-s1">
-                            <a class="btn-large waves-effect waves-light red timer-btn" onclick="resetTiming()">Reset
-                                <i class="material-icons left">delete</i>
-                            </a>
-                        </div>
-                        <div class="col s5">
+                        <div class="col s10 offset-s1">
                             <button class="btn-large waves-effect waves-light green timer-btn" type="submit"
                                 name="action">Save
                                 <i class="material-icons left">save</i>
                             </button>
+                        </div>
+                        <div class="col s10 offset-s1">
+                            <a class="btn-large waves-effect waves-light red timer-btn" style="margin-top: 25px;"
+                                onclick="resetTiming()">Reset
+                                <i class="material-icons left">delete</i>
+                            </a>
                         </div>
                     </div>
                 </form>

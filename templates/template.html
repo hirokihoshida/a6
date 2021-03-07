@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/materialize.min.css') }}">
     <title>Focus Now</title>
-    
+
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -21,6 +21,11 @@
 <body>
     <nav>
         <div class="nav-wrapper green darken-1">
+            {% if request.path != "/" %}
+            <ul class="left">
+                <li><a href="{{ url_for('home') }}" class="left"><i class="material-icons">arrow_back</i></a></li>
+            </ul>
+            {% endif %}
             <a href="{{ url_for('home') }}" class="brand-logo center">Focus Now</a>
         </div>
     </nav>

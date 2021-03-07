@@ -9,7 +9,7 @@
             <script>
                 var tasks = JSON.parse(localStorage.getItem("tasks"));
                 if (tasks['tasks'].length == 0) {
-                    document.write("<h5 style='text-align: center;'>You currently have no tasks!</h5>")
+                    document.write("<h6 style='text-align: center;'>You currently have no tasks!</h6>")
                 }
                 else {
                     $.each(tasks["tasks"], function (i, item) {
