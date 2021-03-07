@@ -95,6 +95,8 @@ function startFocus() {
                 //if all tasks are done, finish
                 if (tasksRemaining['tasks'].length == 0) {
                     $('#info-banner').text("You Finished All Your Tasks!");
+                    buttonClicked();
+                    stopTimer();
                     return;
                 }
                 startBreakLong();
